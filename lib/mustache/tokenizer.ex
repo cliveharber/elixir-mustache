@@ -274,7 +274,7 @@ defmodule Mustache.Tokenizer do
   end
 
   defp strip_space([]), do: raise(SyntaxError, description: "Unclosed tag")
-  defp strip_space([? |t]), do: t
+  defp strip_space([?\s|t]), do: t
   defp strip_space(string), do: string
 
   defp tokenize_new_otag(string, buffer, finish_flg \\ false)
@@ -283,7 +283,7 @@ defmodule Mustache.Tokenizer do
     raise SyntaxError, description: "Unclosed tag"
   end
 
-  defp tokenize_new_otag([? |t], buffer, _finish_flg) do
+  defp tokenize_new_otag([?\s|t], buffer, _finish_flg) do
     tokenize_new_otag(t, buffer, true)
   end
 
@@ -311,7 +311,7 @@ defmodule Mustache.Tokenizer do
       _ ->
         case string do
           [] -> raise SyntaxError, description: "Unclosed tag"
-          [? |t] ->
+          [?\s|t] ->
             tokenize_new_ctag(t, ctag, buffer, ignore_break_flg)
           [h|t] ->
             tokenize_new_ctag(t, ctag, [h|buffer], ignore_break_flg)
@@ -325,7 +325,7 @@ defmodule Mustache.Tokenizer do
   defp tokenize_text(line, buffer, acc, ignore_tail_whitespaces_flg \\ false)
 
   defp tokenize_text(line, buffer, acc, true) do
-    [ { :text, line, String.rstrip(:unicode.characters_to_binary(Enum.reverse(buffer)), ? ) } | acc]
+    [ { :text, line, String.rstrip(:unicode.characters_to_binary(Enum.reverse(buffer)), ?\s) } | acc]
   end
 
   defp tokenize_text(line, buffer, acc, false) do
@@ -341,7 +341,7 @@ defmodule Mustache.Tokenizer do
     { [{ :text, line, :unicode.characters_to_binary(Enum.reverse(buffer)) } | acc], 0 }
   end
 
-  defp do_tokenize_text_and_count_indent([? |list], i) do
+  defp do_tokenize_text_and_count_indent([?\s|list], i) do
     do_tokenize_text_and_count_indent(list, i + 1)
   end
 
@@ -349,7 +349,7 @@ defmodule Mustache.Tokenizer do
 
   # ignore flg
 
-  defp ignore_break?([? |t], acc), do: ignore_break?(t,acc)
+  defp ignore_break?([?\s|t], acc), do: ignore_break?(t,acc)
   defp ignore_break?([?\n,?\r|_], _), do: true
   defp ignore_break?([?\n|_], _), do: true
   defp ignore_break?([], [:line_break|_]), do: true
@@ -377,7 +377,7 @@ defmodule Mustache.Tokenizer do
   defp head_is_line_break?([:line_break|_]), do: true
   defp head_is_line_break?(_), do: false
   
-  defp binary_to_atom(binary) do
-    :erlang.binary_to_atom(binary, :utf8)
-  end
+  #defp binary_to_atom(binary) do
+  #  :erlang.binary_to_atom(binary, :utf8)
+  #end
 end
