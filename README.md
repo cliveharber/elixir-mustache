@@ -1,8 +1,8 @@
 # Mustache for Elixir
 
-[![Build Status](https://travis-ci.org/mururu/elixir-mustache.png?branch=master)](https://travis-ci.org/mururu/elixir-mustache)
+[![Build Status](https://travis-ci.org/cliveharber/elixir-mustache.png?branch=master)](https://travis-ci.org/cliveharber/elixir-mustache)
 
-WIP
+WIP - updates for Elixir 1.2.4
 
 ## Usage
 
